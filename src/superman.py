@@ -2,81 +2,61 @@
 
 #
 #   SUPERMAN
+#   Written By: Tyler Welton (spaceB0x)
 #
 
 import sys
 import os
 import glob
-
+import argparse
+import cheatsheet_mod as cheat
+import module_mod as mod
 
 src_dir = os.path.dirname(os.path.realpath(__file__))
-modules_dir = str(src_dir) + "/../modules"
-concepts_dir = str(src_dir) + "/../concepts"
+
+#############
+# ARGUMENTS #
+#############
+
+parser = argparse.ArgumentParser(description='Turn your mind into a super manual....')
+group = parser.add_mutually_exclusive_group()
+group.add_argument('-l', '--list', help='list modules, cheats, etc')
+group.add_argument('-c', '--cheat', help='use a cheatsheet')
+args = parser.parse_args()
 
 def main():
-    started = 1;
-
+    # If no arguments, then start framework loop
     if(len(sys.argv) == 1):
         # Enter main loop
-        while(started):
-            stdin_args = [];
-            stdin_args.append(sys.argv[0]);
-
+        while 1:
+            printBanner()
+            stdin_args = []
+            stdin_args.append(sys.argv[0])
+    # Else execute one time command (don't enter framework loop)
     else:
-        parse_args(sys.argv);
-         
+        parse_arguments()
+        print "ok" 
 
-def parse_args(args_arr):
-    if args_arr[1] == "list":
-        if args_arr[2] == "modules":
-            list_modules();
-        elif (args_arr[2] == "cheats" or args_arr[2] == "cheatsheets"):
-            list_cheatsheets();
-        else:
-            print "Sorry " + str(args_arr[2]) + " is not a listable thing...";
-    elif args_arr[1] == "cheat":
-        if cheatExists(args_arr[2]):
-            
+## Parses arguments for quick command line usage
+def parse_arguments():
+    ## handle arguments
+    if (args.list == "modules") and (args.list != None):
+        mod.list_modules()
+        exit
+    elif (args.list != None) and (args.list == "cheats" or args.list == "cheatsheets"):
+        cheat.list_cheatsheets()
+        exit
+
+    if args.cheat != None:
+        if cheat.cheatExists(args.cheat):
+            cheat.getCheat(args.cheat)
+            exit
         else: 
-            print "Sorry. The cheatsheet " + args_arr[2] + " does not exist"
+            print "Sorry. The cheatsheet " + args.cheat + " does not exist or"
 
 
-## LIST functions
-def list_modules():
-    for root,dirs,files in os.walk(modules_dir):
-        for file in files:
-            if file.endswith("_mod.py"):
-                print file[:-7]
-
-def list_cheatsheets():
-    for root,dirs,files in os.walk(modules_dir):
-        for file in files:
-            if file.endswith("_cheatsheet.py"):
-                print file[:-14]
-
-
-## ADD functions
-def add_moduless():
-    print ""
-
-## Check exists functions
-def cheatExists(name):
-    for root,dirs,files in os.walk(modules_dir):
-        for file in files:
-            fn = str(name) + "_cheatsheet.py"
-            if (file == fn):
-                return True
-    return False
-
-def moduleExists(name):
-    for root,dirs,files in os.walk(modules_dir):
-        for file in files:
-            fn = str(name) + "_mod.py"
-            if (file == fn):
-                return True
-    return False
-
-
+def printBanner():
+    print "Welcome to Superman!"
 
 if __name__ == "__main__":
     main()

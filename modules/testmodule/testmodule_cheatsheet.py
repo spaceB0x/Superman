@@ -5,8 +5,8 @@ cheatsheet = " Cheet sheet info\n \
             line 3 \n \
             end "
 
-def printcheetsheat():
+def printCheatSheet():
     print cheatsheet;
 
-def appendcheetsheet():
+def appendCheatSheet():
     print ""

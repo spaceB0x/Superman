@@ -1,0 +1,33 @@
+{
+  "name": "superman",
+  "version": "1.0.0",
+  "description": "Command Training Security Framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo 'hello'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spaceB0x/superman.git"
+  },
+  "keywords": [
+    "training",
+    "security",
+    "cheatsheets"
+  ],
+  "author": "spaceB0x",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/spaceB0x/superman/issues"
+  },
+  "homepage": "https://github.com/spaceB0x/superman#readme",
+  "dependencies": {
+    "chalk": "^2.1.0",
+    "clear": "0.0.1",
+    "columnify": "^1.5.4",
+    "inquirer": "^3.2.2",
+    "jslint": "^0.11.0",
+    "lodash": "^4.17.4",
+    "lowdb": "^0.16.2"
+  }
+}

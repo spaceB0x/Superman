@@ -175,7 +175,6 @@ module.exports = {
 
         for (let s = 0; s < num; s++) {
             let r1 = _.random(q.length - 1);
-            log(r1)
             proms.push(new Promise((resolve, reject) => {
                 q_arr.push(q[r1]);
                 resolve();
@@ -261,9 +260,7 @@ function questionAllPrompt(q_arr, cb) {
             validate: function (value) {
                 if (value.length) {
                     if (value == q_arr[x].answer) {
-                        clear()
                         log(green("\tCorrect!"))
-
                         return true
                     } else {
                         log(red(`\tWrong!`))
@@ -307,7 +304,6 @@ function drillAllPrompt(q_arr, num, cb) {
             new_arr.push(o);
         }
     }
-    log(new_arr)
     inquirer.prompt(new_arr).then(cb);
 }
 

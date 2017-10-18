@@ -227,6 +227,17 @@ function mainPrompt() {
                                 rl.prompt();
                             }
                             break;
+                        case 'tags':
+                            if (global.loaded_module != "") {
+                                modules.listTags(() => {
+                                    rl.prompt();
+                                });
+                            }
+                            else{
+                                log(yellow(`No module loaded for which to list tags`))
+                                rl.prompt();
+                            }
+                            break;
                         default:
                             log(yellow("Can't list that"))
                             rl.prompt();

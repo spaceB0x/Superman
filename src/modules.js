@@ -108,6 +108,22 @@ module.exports = {
         return cb();
     },
 
+    listTags: (cb) => {
+        log(chalk.cyan(`-----------------------------------------\nTags for module: ${global.loaded_module}\n-----------------------------------------`))
+        let arr = db['modules'];
+        for (let obj in arr) {
+            if (_.includes(arr[obj], global.loaded_module)) {
+                if (arr[obj].tags.length) {
+                    let columns = columnify(arr[obj].tags);
+                    console.log(columns)
+                } else {
+                    console.log(yellow("No tags found for this module"))
+                }
+            }
+        }
+        return cb();
+    },
+
     removeModuleItem: (type) => {
         let arr = db['modules'];
         for (let obj in arr) {

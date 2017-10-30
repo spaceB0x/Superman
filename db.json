@@ -1364,5 +1364,53 @@
         }],
         "tags": [],
         "platform": ""
+    }, {
+        "name": "fuzzing/AFL",
+        "questions": [],
+        "commands": [{
+            "command": "Step 1.)",
+            "comment": "Fork"
+        }, {
+            "command": "Step 2.)",
+            "comment": "Load and keep in shared memory. Stopping at main()"
+        }, {
+            "command": "Step 3.)",
+            "comment": "Cycle seed files through looking for crash, hangs, or new paths."
+        }, {
+            "command": "NOTE",
+            "comment": "1 cycle equals one path with all seed files."
+        }, {
+            "command": "NOTE",
+            "comment": "Only really handles files and stin. Kernel and OS level fuzzing ins being developed."
+        }],
+        "tags": [],
+        "platform": ""
+    }, {
+        "name": "linux/ssh/advanced",
+        "questions": [{
+            "question": "Perform a forward SSH tunnel from local port 33 to remote server 1.1.1.1 on remote port 55 for user 'frank' at server 'machine'",
+            "answer": "ssh -L 33:1.1.1.1:55 frank@machine"
+        }, {
+            "question": "Preform a reverse SSH tunnel to local host 1.2.3.4 on remote port 1000 to local port 5000 for user 'frank' at server hostname 'machine'",
+            "answer": "ssh -R 1000:1.2.3.4:5000 frank@machine"
+        }],
+        "commands": [{
+            "command": "ssh -L <LOCAL_PORT>:<REMOTE_IP>:<REMOTE_PORT> <USER>@<SERVER>",
+            "comment": "Forward Tunnel: map port from remote machine/network on local machine"
+        }, {
+            "command": "ssh -R <REMOTE_PORT>:<LOCAL_IP>:<LOCAL_PORT> <USER>@<SERVER>",
+            "comment": "Reverse Tunnel: make local port accessable to remote machine"
+        }],
+        "tags": [{
+            "tag": "ssh",
+            "none": "asdf"
+        }, {
+            "tag": "linux",
+            "none": "asdf"
+        }, {
+            "tag": "post-exploitation",
+            "none": "adsf"
+        }],
+        "platform": ""
     }]
 }
